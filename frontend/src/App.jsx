@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
-// import Home from './pages/Home'; // Descomente depois
-// import Login from './pages/Login'; // Descomente depois
-// import AtivosIrrigacao from './pages/AtivosIrrigacao'; // Nossa futura página!
+import AtivosIrrigacao from './pages/AtivosIrrigacao';
 
 const RotaProtegida = ({ children }) => {
   const auth = localStorage.getItem('token');
@@ -39,7 +37,6 @@ function DashboardLayout({ children }) {
   return (
     <div className="flex h-screen bg-slate-50 text-slate-900 font-sans overflow-hidden selection:bg-emerald-500 selection:text-white">
       
-      {/* SIDEBAR EXECUTIVA */}
       <aside className="w-64 bg-slate-900 text-slate-300 flex flex-col shadow-2xl z-20 flex-shrink-0">
         <div className="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-950">
           <div className="flex items-center gap-3">
@@ -70,10 +67,8 @@ function DashboardLayout({ children }) {
         </nav>
       </aside>
 
-      {/* ÁREA PRINCIPAL */}
       <div className="flex-1 flex flex-col min-w-0">
         
-        {/* HEADER CLEAN */}
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0">
           <h1 className="text-xl font-semibold text-slate-800 tracking-tight">
             Painel de Controle
@@ -100,7 +95,6 @@ function DashboardLayout({ children }) {
           </div>
         </header>
 
-        {/* CONTEÚDO DINÂMICO */}
         <main className="flex-1 overflow-y-auto p-8 bg-slate-50/50">
           <div className="max-w-7xl mx-auto">
             {children}
@@ -116,27 +110,18 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* <Route path="/login" element={<Login />} /> */}
-        
         <Route path="/" element={
-          // <RotaProtegida>
             <DashboardLayout>
               <div className="p-8 border border-dashed border-slate-300 rounded-xl flex items-center justify-center text-slate-400">
                 Conteúdo da Home (Em construção)
               </div>
             </DashboardLayout>
-          // </RotaProtegida>
         } />
 
         <Route path="/irrigacao/ativos" element={
-          // <RotaProtegida>
             <DashboardLayout>
-              <div className="p-8 border border-dashed border-emerald-300 bg-emerald-50/50 rounded-xl flex flex-col items-center justify-center text-emerald-600/80">
-                <svg className="w-12 h-12 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                <span>A página da tabela de ativos será renderizada aqui!</span>
-              </div>
+              <AtivosIrrigacao />
             </DashboardLayout>
-          // </RotaProtegida>
         } />
       </Routes>
     </Router>
