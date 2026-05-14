@@ -7,7 +7,7 @@ export default function AtivosIrrigacao() {
   const [loading, setLoading] = useState(true);
 
   // DICA: Se estiver rodando o servidor backend no seu PC em vez do Render, mude a URL para 'http://localhost:5000/api'
-  const API_URL = 'https://infrawiki-api.onrender.com/api'; 
+  const API_URL = 'http://localhost:5000/api'; 
 
   const buscarDados = () => {
     setLoading(true);
