@@ -159,4 +159,32 @@ router.post('/ativos-irrigacao', async (req, res) => {
   }
 });
 
+const AtivoIrrigacao = require('../models/AtivoIrrigacao');
+
+// Rota para BUSCAR os ativos (O que preenche a tabela)
+router.get('/ativos-irrigacao', async (req, res) => {
+  try {
+    const ativos = await AtivoIrrigacao.find();
+    res.json(ativos);
+  } catch (error) {
+    console.error("❌ Erro na cozinha ao BUSCAR ativos:", error);
+    res.status(500).json({ mensagem: 'Erro interno no servidor' });
+  }
+});
+
+// Rota para INJETAR os ativos (O botão preto)
+router.post('/ativos-irrigacao', async (req, res) => {
+  try {
+    const novoAtivo = new AtivoIrrigacao(req.body);
+    await novoAtivo.save();
+    res.status(201).json(novoAtivo);
+  } catch (error) {
+    console.error("❌ Erro na cozinha ao SALVAR ativo:", error);
+    if (error.code === 11000) {
+      return res.status(400).json({ mensagem: 'Este ID de ativo já existe no banco.' });
+    }
+    res.status(500).json({ mensagem: 'Erro interno no servidor', detalhes: error.message });
+  }
+});
+
 module.exports = router;
