@@ -187,4 +187,45 @@ router.post('/ativos-irrigacao', async (req, res) => {
   }
 });
 
+// Rota para ATUALIZAR o status via Python (O Cérebro IoT)
+router.put('/ativos-irrigacao/:codigo', async (req, res) => {
+  try {
+    // Busca o ativo pelo ID (ex: IRR-VLV-S43-01) e atualiza com os dados que o Python mandou
+    const ativoAtualizado = await AtivoIrrigacao.findOneAndUpdate(
+      { FM_Codigo_Ativo: req.params.codigo },
+      { $set: req.body },
+      { new: true }
+    );
+
+    if (!ativoAtualizado) {
+      return res.status(404).json({ mensagem: 'Ativo não encontrado no banco.' });
+    }
+
+    res.json(ativoAtualizado);
+  } catch (error) {
+    console.error("❌ Erro na cozinha ao ATUALIZAR ativo:", error);
+    res.status(500).json({ mensagem: 'Erro interno no servidor' });
+  }
+});
+
+// PUT - Atualiza o status de um ativo (Usado pelo simulador IoT em Python)
+router.put('/ativos-irrigacao/:codigo', async (req, res) => {
+  try {
+    const ativoAtualizado = await AtivoIrrigacao.findOneAndUpdate(
+      { FM_Codigo_Ativo: req.params.codigo },
+      { $set: req.body },
+      { returnDocument: 'after' } // <--- A MUDANÇA É SÓ NESSA LINHA!
+    );
+
+    if (!ativoAtualizado) {
+      return res.status(404).json({ mensagem: 'Ativo não encontrado no banco.' });
+    }
+
+    res.json(ativoAtualizado);
+  } catch (error) {
+    console.error("❌ Erro ao atualizar ativo:", error);
+    res.status(500).json({ mensagem: 'Erro interno no servidor' });
+  }
+});
+
 module.exports = router;
